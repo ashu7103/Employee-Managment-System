@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:font-size="http://www.w3.org/1999/xhtml"
+      xmlns:color="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Register</title>
+    <style>
+        body { font-family: Arial; text-align: center; margin-top: 100px; }
+        input { margin: 8px; padding: 5px; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+
+<h2>Register</h2>
+
+<form th:action="@{/register}" method="post">
+    <label>Username:</label>
+    <input type="text" name="username" required><br><br>
+
+    <label>Password:</label>
+    <input type="password" name="password" required><br><br>
+
+    <label>Role:</label>
+    <select name="role" style="width: 200px; height: 35px;">
+        <option style="color: blue;" value="USER">User</option>
+        <option style="color: blue;" value="ADMIN">Admin</option>
+    </select><br><br>
+
+    <button type="submit">Register</button>
+</form>
+
+<div th:if="${errorInRegister}">
+    <p style="color: red;" th:text="${errorInRegister}"></p>
+</div>
+
+<div th:if="${param.success}">
+    <p style="color: green;">Registration successful! Please login.</p>
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+</head>
+<body>
+<h1>Welcome, <span style="color:red" th:text="${username}"></span></h1>
+<h1>SessionId : , <span style="color:red" th:text="${sessionId}"></span></h1>
+<h1>creationTime :, <span style="color:red" th:text="${creationTime}"></span></h1>
+<h1>expireTime :, <span style="color:red" th:text="${expireTime}"></span></h1>
+
+<form action="/perform_logout" method="post">
+        <button type="submit">Logout</button>
+    </form>
+</body>
+</html>

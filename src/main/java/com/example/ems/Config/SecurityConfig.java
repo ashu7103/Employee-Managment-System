@@ -33,18 +33,18 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/login", "/logout").permitAll()
-                        .requestMatchers("/login", "/perform_login", "/register", "/css/**", "/js/**").permitAll()
+                                .requestMatchers("/login", "/perform_login", "/register", "/css/**", "/js/**").permitAll()
                                 .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .requestMatchers("/user/**").hasRole("USER")
-                        .anyRequest().authenticated()
+                                .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .loginProcessingUrl("/perform_login")
+                                .loginPage("/login")
+                                .loginProcessingUrl("/perform_login")
                                 .successHandler(customSuccessHandler())
                                 // Custom redirect logic
-//                        .defaultSuccessUrl("/admin/home", true)
-                        .failureUrl("/login?error=true")
+//                              .defaultSuccessUrl("/admin/home", true)
+                                .failureUrl("/login?error=true")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/perform_logout")

@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:font-size="http://www.w3.org/1999/xhtml"
-      xmlns:color="http://www.w3.org/1999/xhtml">
+      xmlns:color="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <title>Register</title>
     <style>
         body { font-family: Arial; text-align: center; margin-top: 100px; }
@@ -31,6 +33,8 @@
 
 <div th:if="${errorInRegister}">
     <p style="color: red;" th:text="${errorInRegister}"></p>
+    </br>
+    <a th:href="@{/login}"  class="btn btn-outline-primary">Login</a>
 </div>
 
 <div th:if="${param.success}">

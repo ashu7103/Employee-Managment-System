@@ -4,6 +4,7 @@ import com.example.ems.Model.Users;
 import com.example.ems.Service.UserService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,10 +25,10 @@ public class AuthController {
 
     @GetMapping("home")
     public String homePage(Model model, HttpSession session) {
-        String sessionId=session.getId();
+        String sessionId = session.getId();
         String username = (String) session.getAttribute("username");
         model.addAttribute("username", username);
-        model.addAttribute("sessionId",sessionId);
+        model.addAttribute("sessionId", sessionId);
 
         long creationTime = session.getCreationTime();           // when session started (ms)
         int maxInactive = session.getMaxInactiveInterval();      // seconds
@@ -44,7 +45,7 @@ public class AuthController {
         return "login";
     }
 
-//-------- Logout define later in better way-------------------
+    //-------- Logout define later in better way-------------------
     @GetMapping("/logout-manual")
     public String logoutManual(HttpSession session) {
 //        session.invalidate();  // Destroys session
@@ -58,11 +59,27 @@ public class AuthController {
     }
 
     @GetMapping("/register")
-    public String showRegisterPage(Model model) {
-//        if (error != null) {
-//            model.addAttribute("errorInRegister", error);
-//        }
-        return "register";
+    public String showRegisterPage() {
+
+        return "register"; // AUTO FRECH FLASH ATTRIBUTE
+    }
+    @GetMapping("/homeReturn")
+    public String redirectToDashboard(Authentication authentication) {
+
+        if (authentication == null) {
+            return "redirect:/login";
+        }
+
+        // Check role from logged-in user
+        if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
+            return "redirect:/admin/home";
+        }
+        else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
+            return "redirect:/user/home";
+        }
+        else {
+            return "redirect:/access-denied";
+        }
     }
 
     @PostMapping("/register")
@@ -77,7 +94,8 @@ public class AuthController {
 //            model.addAttribute("errorInRegister", e.getMessage());
             logger.error("Registration failed for username: {}, reason: {}", user.getUsername(), e.getMessage());
 //            redirectAttributes.addFlashAttribute("errorInRegister", e.getMessage());
-            redirectAttributes.addFlashAttribute("errorInRegister","username alredy exist in System! Try Another");
+            redirectAttributes.addFlashAttribute("errorInRegister", e.getMessage());
+//            redirectAttributes.addFlashAttribute("errorInRegister", "username alredy exist in System! Try Another");
             return "redirect:/register";
         }
 

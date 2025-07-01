@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Compliance List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2>Compliance List</h2>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>RL Type</th>
+            <th>Details</th>
+            <th>Creation Date</th>
+            <th>Department</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:if="${#lists.isEmpty(complianceList)}">
+            <td colspan="6" class="text-center">No Compliance Records Found</td>
+        </tr>
+
+        <tr th:each="comp : ${complianceList}">
+            <td th:text="${comp.complianceId}"></td>
+            <td th:text="${comp.rlType}"></td>
+            <td th:text="${comp.details}"></td>
+            <td th:text="${#dates.format(comp.createDate, 'dd-MM-yyyy')}"></td>
+            <td th:text="${comp.department.departmentName}"></td>
+            <td>
+                <a th:href="@{'/admin/compliance/edit/' + ${comp.complianceId}}" class="btn btn-sm btn-primary">Edit</a>
+                <a th:href="@{'/admin/compliance/delete/' + ${comp.complianceId}}" class="btn btn-sm btn-danger ms-1">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/admin/home}" class="btn btn-secondary">Home</a>
+    <a th:href="@{/admin/compliance/add}" class="btn btn-success ms-2">Add New Compliance</a>
+
+</div>
+
+</body>
+</html>

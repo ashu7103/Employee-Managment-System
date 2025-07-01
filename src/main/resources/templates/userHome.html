@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>User DashBoard</title>
+</head>
+<!--<body style="text-align: center;">-->
+<body>
+
+<div class="bg-primary text-white p-4 mb-4 rounded shadow">
+    <h2 class="mb-0">User Dashboard</h2>
+</div>
+
+<h1>Welcome, <span style="color:red" th:text="${username}"></span></h1>
+
+<div class="container">
+
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Regulations Assigned to You</div>
+        <div class="card-body">
+            <a th:href="@{/user/regulations}" class="btn btn-outline-primary">View My Regulations</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Comments on Regulations</div>
+        <div class="card-body">
+            <a th:href="@{/user/comments}" class="btn btn-outline-primary">View & Update Comments</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header bg-light fw-bold">Department Compliance Status</div>
+        <div class="card-body">
+            <a th:href="@{/user/compliance-status}" class="btn btn-outline-primary">Track Compliance</a>
+        </div>
+    </div>
+
+    <h3>Go Back To Home Page : <a th:href="@{/homeReturn}" class="btn btn-outline-primary"> Home </a></h3>
+    <h3>Logout : <a th:href="@{/logout-manual}" class="btn btn-outline-primary">Logout</a></h3>
+</div>
+
+</div>
+</body>
+</html>

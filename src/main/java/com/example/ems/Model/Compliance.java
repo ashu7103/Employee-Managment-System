@@ -17,6 +17,7 @@ import java.util.Date;
 public class Compliance {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "COMPLIANCEID")
     private Long complianceId;
 

@@ -2,6 +2,7 @@ package com.example.ems.Service;
 
 import com.example.ems.Model.Department;
 import com.example.ems.Repository.DepartmentRepository;
+import com.example.ems.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -72,6 +73,22 @@ public class DepartmentService {
         } catch (Exception e) {
             logger.error("Error deleting Department by ID {}: {}", departmentId, e.getMessage(), e);
             throw new RuntimeException("Failed to delete department.");
+        }
+    }
+
+    public void updateDepartment(Department updatedDepartment, Long id) {
+        try {
+            Department existingDepartment = departmentRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("Department not found with id: " + id));
+
+            existingDepartment.setDepartmentName(updatedDepartment.getDepartmentName());
+
+            departmentRepository.save(existingDepartment);
+
+            logger.info("Department updated successfully with id: {}", id);
+        } catch (Exception ex) {
+            logger.error("Unexpected error while updating department with id {}: {}", id, ex.getMessage());
+            throw new RuntimeException("Failed to update department. Please try again later.");
         }
     }
 }

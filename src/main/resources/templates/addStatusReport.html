@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Add Status Report</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+  <h2>Add Status Report</h2>
+
+  <form th:action="@{/admin/statusReports/add}" th:object="${statusReport}" method="post" class="border p-4 rounded shadow">
+
+    <div class="mb-3">
+      <label class="form-label">Compliance</label>
+      <select th:field="*{compliance}" class="form-select" required>
+        <option th:each="comp : ${complianceList}" th:value="${comp}" th:text="${comp.rlType}"></option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Employee</label>
+      <select th:field="*{employee}" class="form-select" required>
+        <option th:each="emp : ${employeeList}" th:value="${emp}" th:text="${emp.firstName + ' ' + emp.lastName}"></option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Department</label>
+      <select th:field="*{department}" class="form-select" required>
+        <option th:each="dept : ${departmentList}" th:value="${dept}" th:text="${dept.departmentName}"></option>
+      </select>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Comments</label>
+      <input type="text" th:field="*{comments}" class="form-control" maxlength="15" placeholder="Enter Comments">
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Creation Date</label>
+      <input type="date" th:field="*{createDate}" class="form-control" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a th:href="@{/admin/statusReports}" class="btn btn-secondary ms-2">Cancel</a>
+
+  </form>
+</div>
+
+</body>
+</html>

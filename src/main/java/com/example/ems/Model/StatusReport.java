@@ -3,6 +3,7 @@ package com.example.ems.Model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -33,7 +34,7 @@ public class StatusReport {
     private String comments;
 
     @Column(name = "CREATEDATE")
-    private Date createDate;
+    private LocalDate createDate;
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID")

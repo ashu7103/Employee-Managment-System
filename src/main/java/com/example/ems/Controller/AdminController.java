@@ -119,28 +119,65 @@ public class AdminController {
     }
 
     //-----------Compliance - Regulation Creation-------------------
-    // Show Add Compliance Form
-    @GetMapping("/add")
+    // Show All Compliance
+    @GetMapping("/compliances")
+    public String viewAllCompliance(Model model) {
+        model.addAttribute("complianceList", complianceService.getAllCompliance());
+        return "compliances";
+    }
+
+    // Show Add Form
+    @GetMapping("/compliance/add")
     public String showAddComplianceForm(Model model) {
         model.addAttribute("compliance", new Compliance());
         model.addAttribute("departments", departmentService.getAllDepartments());
         return "addCompliance";
     }
 
-    // Handle Add Compliance Form Submission
-    @PostMapping("/add")
+    // Handle Add Form
+    @PostMapping("/compliance/add")
     public String saveCompliance(@ModelAttribute Compliance compliance) {
+        Department dept = departmentService.getDepartmentById(compliance.getDepartment().getDepartmentId());
+        compliance.setDepartment(dept);
         complianceService.saveCompliance(compliance);
         return "redirect:/admin/compliances";
     }
 
-    //View All Compliance Records
-    @GetMapping("/compliances")
-    public String viewAllCompliance(Model model) {
-        List<Compliance> complianceList = complianceService.getAllCompliance();
-        model.addAttribute("complianceList", complianceList);
-        return "compliances";
+    // Show Edit Form
+
+    @GetMapping("/compliance/edit/{id}")
+    public String editCompliance(@PathVariable Long id, Model model) {
+        Compliance compliance = complianceService.getComplianceById(id);
+        if (compliance == null) {
+            throw new RuntimeException("Compliance not found with ID: " + id);
+        }
+        model.addAttribute("compliance", compliance);
+        model.addAttribute("departments", departmentService.getAllDepartments());
+        return "editCompliance";
     }
+
+    // Handle Update
+    @PostMapping("/compliance/edit")
+    public String updateCompliance(@ModelAttribute Compliance updatedCompliance) {
+        Department dept = departmentService.getDepartmentById(updatedCompliance.getDepartment().getDepartmentId());
+        Compliance existing=complianceService.getComplianceById(updatedCompliance.getComplianceId());
+        existing.setDepartment(dept);
+
+        complianceService.updateCompliance(updatedCompliance);
+        return "redirect:/admin/compliances";
+    }
+
+    // Delete Compliance
+    @GetMapping("/compliance/delete/{id}")
+    public String deleteCompliance(@PathVariable Long id) {
+        try {
+            complianceService.deleteCompliance(id);
+        } catch (Exception e) {
+            throw new RuntimeException("Error deleting compliance with ID: " + id);
+        }
+        return "redirect:/admin/compliances";
+    }
+
 
     //-----------------StstusReport Managment---------------------------
     @GetMapping("statusReports")

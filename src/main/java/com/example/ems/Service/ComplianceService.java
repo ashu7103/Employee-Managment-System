@@ -74,4 +74,17 @@ public class ComplianceService {
             throw new RuntimeException("Failed to delete compliance.");
         }
     }
+    public void updateCompliance(Compliance updatedCompliance) {
+        Compliance existing = complianceRepository.findById(updatedCompliance.getComplianceId())
+                .orElseThrow(() -> new RuntimeException("Compliance not found with ID: " + updatedCompliance.getComplianceId()));
+
+        // Only update fields, not ID
+        existing.setRlType(updatedCompliance.getRlType());
+        existing.setDetails(updatedCompliance.getDetails());
+        existing.setCreateDate(updatedCompliance.getCreateDate());
+        existing.setDepartment(updatedCompliance.getDepartment());
+
+        complianceRepository.save(existing);
+    }
+
 }

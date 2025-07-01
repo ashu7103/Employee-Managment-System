@@ -17,6 +17,7 @@ import java.util.Date;
 public class StatusReport {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "STATUSRPTID")
     private Long statusRptId;
 
@@ -26,7 +27,7 @@ public class StatusReport {
 
     @ManyToOne
     @JoinColumn(name = "EMPID")
-    private Employees employee;
+    private Employee employee;
 
     @Column(name = "COMMENTS", length = 15)
     private String comments;

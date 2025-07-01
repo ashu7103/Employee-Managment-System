@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Builder
@@ -15,10 +16,11 @@ import java.util.Date;
 
 @Entity
 @Table(name = "EMPLOYEES")
-public class Employees {
+public class Employee {
 
     @Id
     @Column(name = "EMPID")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long empId;
 
     @Column(name = "FIRSTNAME", length = 45)
@@ -28,7 +30,7 @@ public class Employees {
     private String lastName;
 
     @Column(name = "DOB")
-    private Date dob;
+    private LocalDate dob;
 
     @Email
     @Column(name = "EMAIL", length = 100)

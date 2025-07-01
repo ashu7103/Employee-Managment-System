@@ -1,6 +1,8 @@
 package com.example.ems.Service;
 
-import com.example.ems.Model.Employees;
+import com.example.ems.Model.Department;
+import com.example.ems.Model.Employee;
+import com.example.ems.Repository.DepartmentRepository;
 import com.example.ems.Repository.EmployeesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,13 @@ public class EmployeesService {
 
     @Autowired
     private EmployeesRepository employeesRepository;
+    @Autowired
+    private DepartmentRepository departmentRepository;
 
     // Save or Update Employee
-    public Employees saveEmployee(Employees employee) {
+    public Employee saveEmployee(Employee employee) {
         try {
-            Employees saved = employeesRepository.save(employee);
+            Employee saved = employeesRepository.save(employee);
             logger.info("Employee saved successfully with ID: {}", saved.getEmpId());
             return saved;
         } catch (Exception e) {
@@ -30,10 +34,10 @@ public class EmployeesService {
         }
     }
 
-    // Get all Employees
-    public List<Employees> getAllEmployees() {
+    // Get all Employee
+    public List<Employee> getAllEmployees() {
         try {
-            List<Employees> list = employeesRepository.findAll();
+            List<Employee> list = employeesRepository.findAll();
             logger.info("Fetched {} employees.", list.size());
             return list;
         } catch (Exception e) {
@@ -43,9 +47,9 @@ public class EmployeesService {
     }
 
     // Get Employee by ID
-    public Employees getEmployeeById(Long empId) {
+    public Employee getEmployeeById(Long empId) {
         try {
-            Optional<Employees> empOpt = employeesRepository.findById(empId);
+            Optional<Employee> empOpt = employeesRepository.findById(empId);
             if (empOpt.isPresent()) {
                 logger.info("Employee found with ID: {}", empId);
                 return empOpt.get();
@@ -74,4 +78,27 @@ public class EmployeesService {
             throw new RuntimeException("Failed to delete employee.");
         }
     }
+
+    public void updateEmployee(Employee updatedEmployee, Long id) {
+
+        Employee existingEmployee = employeesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Employee not found with id: " + id));
+
+        // Fetch full Department entity using only the id from updatedEmployee.department
+        Long departmentId = updatedEmployee.getDepartment().getDepartmentId();
+        Department department = departmentRepository.findById(departmentId)
+                .orElseThrow(() -> new RuntimeException("Department not found with id: " + departmentId));
+
+        // Update fields
+        existingEmployee.setFirstName(updatedEmployee.getFirstName());
+        existingEmployee.setLastName(updatedEmployee.getLastName());
+        existingEmployee.setDob(updatedEmployee.getDob());
+        existingEmployee.setEmail(updatedEmployee.getEmail());
+        existingEmployee.setDepartment(department);
+
+        employeesRepository.save(existingEmployee);
+    }
+
+
+
 }

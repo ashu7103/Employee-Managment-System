@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
 import java.util.Date;
 
 @Controller
@@ -23,10 +24,11 @@ public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
-    @GetMapping("home")
-    public String homePage(Model model, HttpSession session) {
+    @GetMapping("/")
+    public String homePage(Model model, HttpSession session, Principal principal) {
+        String username = principal.getName(); // Auto-fetched username
         String sessionId = session.getId();
-        String username = (String) session.getAttribute("username");
+
         model.addAttribute("username", username);
         model.addAttribute("sessionId", sessionId);
 

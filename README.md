@@ -1,8 +1,4 @@
-Here’s a strong, professional README.md for your EMS (Employee Management System) project with all key technical and feature highlights:
-
----
-
-# 🚀 Employee Management System (EMS) — Role-Based Secure Web Application
+## 🚀 Employee Management System (EMS) — Role-Based Secure Web Application
 
 A robust, real-world **Employee Management System** designed with full backend layering, secure login/register system, encrypted password storage, and strict role-based access — all built using industry-standard tools and frameworks.
 
@@ -134,8 +130,5 @@ Open for suggestions, improvements, and feature additions. Feel free to fork and
 
 ## 📬 **Contact**
 
-Connect on [LinkedIn](https://www.linkedin.com/in/your-profile) for discussions, collaborations, or feedback.
+Connect on [LinkedIn](https://www.linkedin.com/in/ashu_7103/) for discussions, collaborations, or feedback.
 
----
-
-Let me know if you want me to generate this as a ready `.md` file for download. Want badges, images, or deployment guide added too? 🚀

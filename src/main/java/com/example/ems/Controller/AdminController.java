@@ -1,5 +1,7 @@
 package com.example.ems.Controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import com.example.ems.Model.Compliance;
 import com.example.ems.Model.Department;
@@ -36,6 +38,28 @@ public class AdminController {
         String username = principal.getName(); // Auto-fetched username
         model.addAttribute("username", username);
         return  "adminHome";
+    }
+    //-----------------RegulationStatusByDept----------------------------
+    @GetMapping("/RegulationStatusByDept")
+    public String RegulationStatusByDept(Model model){
+        List<Department> departmentList=departmentService.getAllDepartments();
+        model.addAttribute("departmentList",departmentList);
+        return "RegulationStatusByDept";
+    }
+
+    @GetMapping("/compliance/departmentView")
+    public String viewRegulationsByDepartment(@RequestParam Long deptId, Model model) {
+        List<Object[]> statusReportListByDepartment= statusReportService.latesStatusOfAllComplianceForDept(deptId);
+        //  object[0] = compliance
+        //  object[1] = statusReport
+
+//        List<Compliance> complianceList = complianceService.getComplianceByDepartment(deptId);
+
+        model.addAttribute("statusReportListByDepartment", statusReportListByDepartment);
+        model.addAttribute("departmentList", departmentService.getAllDepartments());
+        model.addAttribute("department",deptId);
+
+        return "RegulationStatusByDept";
     }
 
 
@@ -180,14 +204,17 @@ public class AdminController {
 
 
     //-----------------StstusReport Managment---------------------------
-    @GetMapping("statusReports")
-    public String viewAllReports(Model model) {
-        model.addAttribute("statusReportList", statusReportService.getAllStatusReports());
+
+    // LIST Status Reports
+    @GetMapping("/statusReports")
+    public String listStatusReports(Model model) {
+        model.addAttribute("statusReports", statusReportService.getAllStatusReports());
         return "statusReports";
     }
 
+    // ADD Status Report Form
     @GetMapping("/statusReports/add")
-    public String showAddForm(Model model) {
+    public String addStatusReportForm(Model model) {
         model.addAttribute("statusReport", new StatusReport());
         model.addAttribute("complianceList", complianceService.getAllCompliance());
         model.addAttribute("employeeList", employeesService.getAllEmployees());
@@ -195,24 +222,34 @@ public class AdminController {
         return "addStatusReport";
     }
 
+    // HANDLE ADD
     @PostMapping("/statusReports/add")
-    public String saveReport(@ModelAttribute StatusReport report) {
-        statusReportService.saveStatusReport(report);
+    public String saveStatusReport(@ModelAttribute StatusReport statusReport) {
+        statusReportService.saveStatusReport(statusReport);
         return "redirect:/admin/statusReports";
     }
 
-    @GetMapping("/statusReports/edit/{id}")
-    public String showEditForm(@PathVariable Long id, Model model) {
+    // EDIT Form
+    @GetMapping("/statusReport/edit/{id}")
+    public String editStatusReportForm(@PathVariable Long id, Model model) {
         StatusReport report = statusReportService.getStatusReportById(id);
         model.addAttribute("statusReport", report);
         model.addAttribute("complianceList", complianceService.getAllCompliance());
         model.addAttribute("employeeList", employeesService.getAllEmployees());
         model.addAttribute("departmentList", departmentService.getAllDepartments());
-        return "addStatusReport";
+        return "editStatusReport";
     }
 
-    @GetMapping("/statusReports/delete/{id}")
-    public String deleteReport(@PathVariable Long id) {
+    // HANDLE EDIT
+    @PostMapping("/statusReport/edit/{id}")
+    public String updateStatusReport(@ModelAttribute StatusReport statusReport, @PathVariable Long id) {
+        statusReportService.updateStatusReport(statusReport, id);
+        return "redirect:/admin/statusReports";
+    }
+
+    // DELETE
+    @GetMapping("/statusReport/delete/{id}")
+    public String deleteStatusReport(@PathVariable Long id) {
         statusReportService.deleteStatusReport(id);
         return "redirect:/admin/statusReports";
     }

@@ -13,28 +13,28 @@
 
     <div class="mb-3">
       <label class="form-label">Compliance</label>
-      <select th:field="*{compliance}" class="form-select" required>
-        <option th:each="comp : ${complianceList}" th:value="${comp}" th:text="${comp.rlType}"></option>
+      <select th:field="*{compliance.complianceId}" class="form-select" required>
+        <option th:each="comp : ${complianceList}" th:value="${comp.complianceId}" th:text="${comp.rlType}"></option>
       </select>
     </div>
 
     <div class="mb-3">
       <label class="form-label">Employee</label>
-      <select th:field="*{employee}" class="form-select" required>
-        <option th:each="emp : ${employeeList}" th:value="${emp}" th:text="${emp.firstName + ' ' + emp.lastName}"></option>
+      <select th:field="*{employee.empId}" class="form-select" required>
+        <option th:each="emp : ${employeeList}" th:value="${emp.empId}" th:text="${emp.firstName + ' ' + emp.lastName}"></option>
       </select>
     </div>
 
     <div class="mb-3">
       <label class="form-label">Department</label>
-      <select th:field="*{department}" class="form-select" required>
-        <option th:each="dept : ${departmentList}" th:value="${dept}" th:text="${dept.departmentName}"></option>
+      <select th:field="*{department.departmentId}" class="form-select" required>
+        <option th:each="dept : ${departmentList}" th:value="${dept.departmentId}" th:text="${dept.departmentName}"></option>
       </select>
     </div>
 
     <div class="mb-3">
       <label class="form-label">Comments</label>
-      <input type="text" th:field="*{comments}" class="form-control" maxlength="15" placeholder="Enter Comments">
+      <input type="text" th:field="*{comments}" class="form-control"  placeholder="Enter Comments">
     </div>
 
     <div class="mb-3">
@@ -43,7 +43,7 @@
     </div>
 
     <button type="submit" class="btn btn-primary">Save</button>
-    <a th:href="@{/admin/statusReports}" class="btn btn-secondary ms-2">Cancel</a>
+    <a th:href="@{/admin/home}" class="btn btn-secondary ms-2">Cancel</a>
 
   </form>
 </div>

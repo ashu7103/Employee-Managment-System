@@ -8,6 +8,9 @@
 <h1 style="color:red">Alert!!</h1>
 <h2>Access Denied 🚫</h2>
 <p>You don't have permission to access this page.</p>
+<div th:if="${WrongUser}">
+    <p style="color: red;" th:text="${WrongUser}"></p>
+</div>
 
 <h3>Go Back To Home Page : <a th:href="@{/homeReturn}" class="btn btn-outline-primary"> Home </a></h3>
 <!--<a href="/home">Back to Home</a>-->

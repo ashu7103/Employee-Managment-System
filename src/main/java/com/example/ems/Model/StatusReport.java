@@ -30,7 +30,7 @@ public class StatusReport {
     @JoinColumn(name = "EMPID")
     private Employee employee;
 
-    @Column(name = "COMMENTS", length = 15)
+    @Column(name = "COMMENTS")
     private String comments;
 
     @Column(name = "CREATEDATE")

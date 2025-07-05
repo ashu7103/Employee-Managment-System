@@ -2,6 +2,8 @@ package com.example.ems.Service;
 
 import com.example.ems.Model.Compliance;
 import com.example.ems.Repository.ComplianceRepository;
+import com.example.ems.Repository.EmployeesRepository;
+import com.example.ems.Repository.StatusReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -17,6 +19,20 @@ public class ComplianceService {
 
     @Autowired
     private ComplianceRepository complianceRepository;
+    @Autowired
+    private EmployeesRepository employeesRepository;
+    @Autowired
+    private StatusReportRepository statusReportRepository;
+
+    public String calculateRLStatus(Long rlId, Long deptId) {
+        long totalEmp = employeesRepository.countByDepartment(deptId);
+        long assignedEmp = statusReportRepository.countByComplianceAndDepartment(rlId, deptId);
+
+        if (assignedEmp == 0) return "Not Allotted, Total Employee: "+ totalEmp+" assignedEmp to: "+assignedEmp;
+        if (assignedEmp < totalEmp) return "Partially Allotted, Total employee: "+totalEmp+" assignedEmp to: "+assignedEmp;
+        return "Fully Allotted, Total Employee: "+ totalEmp+" assignedEmp to: "+assignedEmp;
+    }
+
 
     // Save or Update Compliance
     public Compliance saveCompliance(Compliance compliance) {
@@ -86,5 +102,10 @@ public class ComplianceService {
 
         complianceRepository.save(existing);
     }
+
+    public List<Compliance> getComplianceByDepartment(Long departmentId) {
+        return complianceRepository.getComplianceByDepartment(departmentId);
+    }
+
 
 }

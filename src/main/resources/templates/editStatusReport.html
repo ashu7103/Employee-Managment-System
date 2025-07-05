@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Status Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="mb-4">Edit Status Report</h2>
+
+    <form th:action="@{'/admin/statusReport/edit/' + ${statusReport.statusRptId}}" th:object="${statusReport}" method="post" class="border p-4 rounded shadow">
+
+        <!-- Compliance Dropdown -->
+        <div class="mb-3">
+            <label class="form-label">Compliance</label>
+            <select th:field="*{compliance.complianceId}" class="form-select" required>
+                <option th:each="comp : ${complianceList}"
+                        th:value="${comp.complianceId}"
+                        th:text="${comp.rlType}"
+                        th:selected="${comp.complianceId} == ${statusReport.compliance.complianceId}"></option>
+            </select>
+        </div>
+
+        <!-- Employee Dropdown -->
+        <div class="mb-3">
+            <label class="form-label">Employee</label>
+            <select th:field="*{employee.empId}" class="form-select" required>
+                <option th:each="emp : ${employeeList}"
+                        th:value="${emp.empId}"
+                        th:text="${emp.firstName} + ' ' + ${emp.lastName}"
+                        th:selected="${emp.empId} == ${statusReport.employee.empId}"></option>
+            </select>
+        </div>
+
+        <!-- Department Dropdown -->
+        <div class="mb-3">
+            <label class="form-label">Department</label>
+            <select th:field="*{department.departmentId}" class="form-select" required>
+                <option th:each="dept : ${departmentList}"
+                        th:value="${dept.departmentId}"
+                        th:text="${dept.departmentName}"
+                        th:selected="${dept.departmentId} == ${statusReport.department.departmentId}"></option>
+            </select>
+        </div>
+
+        <!-- Comments -->
+        <div class="mb-3">
+            <label class="form-label">Comments</label>
+            <textarea th:field="*{comments}" class="form-control" rows="3" required></textarea>
+        </div>
+
+        <!-- Create Date -->
+        <div class="mb-3">
+            <label class="form-label">Create Date</label>
+            <input type="date" th:field="*{createDate}" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Confirm Changes</button>
+        <a th:href="@{/admin/statusReports}" class="btn btn-secondary ms-2">Cancel</a>
+
+    </form>
+</div>
+
+</body>
+</html>

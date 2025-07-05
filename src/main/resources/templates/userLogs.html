@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Previous Comments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+
+    <h2 class="mb-4">Previous Comments for Regulation</h2>
+
+    <!-- Regulation & Employee Details -->
+    <div class="border p-4 shadow mb-4">
+        <h5>Regulation Details:</h5>
+        <ul>
+            <li><strong>Compliance Id:</strong> <span th:text="${compliance.complianceId}"></span></li>
+            <li><strong>RL Type:</strong> <span th:text="${compliance.rlType}"></span></li>
+            <li><strong>Description:</strong> <span th:text="${compliance.details}"></span></li>
+            <li><strong>Department:</strong> <span th:text="${compliance.department != null ? compliance.department.departmentName : 'Not Assigned'}"></span></li>
+            <li><strong>Employee:</strong> <span th:text="${employee.firstName + ' ' + employee.lastName}"></span></li>
+        </ul>
+    </div>
+
+    <!-- Status Reports Table -->
+    <div th:if="${#lists.isEmpty(statusReports)}">
+        <div class="alert alert-info">No previous comments found.</div>
+    </div>
+
+    <table class="table table-bordered table-striped shadow" th:if="${!#lists.isEmpty(statusReports)}">
+        <thead class="table-dark">
+        <tr>
+            <th>Status Report Id</th>
+            <th>Comment</th>
+            <th>Creation Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="r : ${statusReports}">
+            <td th:text="${r.statusRptId}"></td>
+            <td th:text="${r.comments}"></td>
+            <td th:text="${#temporals.format(r.createDate, 'dd-MM-yyyy')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/user/home}" class="btn btn-secondary mt-3">Home</a>
+
+</div>
+
+</body>
+</html>

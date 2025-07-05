@@ -6,10 +6,10 @@
 </head>
 <body>
 
-<div class="container mt-5">
+<div class="container mt-5 border rounded p-4 shadow">
   <h2>Status Reports List</h2>
 
-  <table class="table table-striped table-bordered">
+  <table class="table table-striped table-bordered shadow mt-4">
     <thead class="table-dark">
     <tr>
       <th>ID</th>
@@ -17,33 +17,34 @@
       <th>Employee</th>
       <th>Department</th>
       <th>Comments</th>
-      <th>Creation Date</th>
+      <th>Create Date</th>
       <th>Actions</th>
     </tr>
     </thead>
 
     <tbody>
-    <tr th:if="${#lists.isEmpty(statusReportList)}">
+    <tr th:if="${statusReports == null or #lists.isEmpty(statusReports)}">
       <td colspan="7" class="text-center">No Status Reports Found</td>
     </tr>
 
-    <tr th:each="rpt : ${statusReportList}">
-      <td th:text="${rpt.statusRptId}"></td>
-      <td th:text="${rpt.compliance.rlType}"></td>
-      <td th:text="${rpt.employee.firstName + ' ' + rpt.employee.lastName}"></td>
-      <td th:text="${rpt.department.departmentName}"></td>
-      <td th:text="${rpt.comments}"></td>
-      <td th:text="${#dates.format(rpt.createDate, 'dd-MM-yyyy')}"></td>
+    <tr th:each="report : ${statusReports}">
+      <td th:text="${report.statusRptId}"></td>
+      <td th:text="${report.compliance.rlType}"></td>
+      <td th:text="${report.employee.firstName} + ' ' + ${report.employee.lastName}"></td>
+      <td th:text="${report.department.departmentName}"></td>
+      <td th:text="${report.comments}"></td>
+      <td th:text="${#temporals.format(report.createDate, 'dd-MM-yyyy')}"></td>
       <td>
-        <a th:href="@{'/admin/statusReports/edit/' + ${rpt.statusRptId}}" class="btn btn-sm btn-primary">Edit</a>
-        <a th:href="@{'/admin/statusReports/delete/' + ${rpt.statusRptId}}" class="btn btn-sm btn-danger ms-1">Delete</a>
+        <a th:href="@{'/admin/statusReport/edit/' + ${report.statusRptId}}" class="btn btn-sm btn-primary">Edit</a>
+        <a th:href="@{'/admin/statusReport/delete/' + ${report.statusRptId}}" class="btn btn-sm btn-danger ms-1"
+           onclick="return confirm('Are you sure you want to delete this?')">Delete</a>
       </td>
     </tr>
     </tbody>
   </table>
 
-  <a th:href="@{/admin/statusReports/add}" class="btn btn-success">Add New Report</a>
-  <a th:href="@{/admin/home}" class="btn btn-secondary ms-2">Home</a>
+  <a th:href="@{/admin/home}" class="btn btn-secondary">Home</a>
+  <a th:href="@{/admin/statusReports/add}" class="btn btn-success ms-2">Add New Status Report</a>
 
 </div>
 

@@ -2,8 +2,10 @@ package com.example.ems.Service;
 
 import com.example.ems.Model.Department;
 import com.example.ems.Model.Employee;
+import com.example.ems.Model.StatusReport;
 import com.example.ems.Repository.DepartmentRepository;
 import com.example.ems.Repository.EmployeesRepository;
+import com.example.ems.Repository.StatusReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;
@@ -98,7 +100,19 @@ public class EmployeesService {
 
         employeesRepository.save(existingEmployee);
     }
+    @Autowired
+    StatusReportRepository statusReportRepository;
 
 
+    public Optional<Employee> getEmployeeByEmail(String email) {
+        return Optional.ofNullable(employeesRepository.getEmployeeByEmail(email).orElse(null));
+    }
 
+    public List<StatusReport> getStatusReportByCompliance(Long complianceId) {
+        return statusReportRepository.findByCompliance_ComplianceIdOrderByCreateDateDescStatusRptIdDesc(complianceId);
+    }
+
+    public List<StatusReport> getStatusReportByComplianceAndEmployee(Long complianceId, Long empId) {
+        return statusReportRepository.findByCompliance_complianceIdAndEmployee_empIdOrderByCreateDateDescStatusRptIdDesc(complianceId,empId);
+    }
 }

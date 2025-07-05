@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Regulation Status by Department</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container mt-5">
+
+  <h2 class="mb-4">View Regulation Status by Department</h2>
+
+  <!-- Department Selection Form -->
+  <form th:action="@{/admin/compliance/departmentView}" method="get" class="border p-4 rounded shadow mb-4">
+    <div class="mb-3">
+
+      <label class="form-label" th:if="${department == null}">Select Department</label>
+      <label class="form-label" th:if="${department != null}">Selected Department</label>
+      <select name="deptId" class="form-select" required>
+        <option value="" disabled selected
+                th:if="${department == null}">Select Department
+        </option>
+        <option th:each="dept : ${departmentList}"
+                th:value="${dept.departmentId}"
+                th:text="${dept.departmentName}"
+                th:selected="${dept.departmentId} == ${department}">
+        </option>
+      </select>
+
+    </div>
+
+    <button type="submit" class="btn btn-primary">View Regulations</button>
+    <a th:href="@{/admin/home}" class="btn btn-secondary ms-2">Home</a>
+  </form>
+
+  <!-- RL Table (Visible after department is selected) -->
+  <div th:if="${statusReportListByDepartment}">
+    <h4 class="mb-3">Regulations for Selected Department</h4>
+
+    <table class="table table-striped table-bordered shadow">
+      <thead class="table-dark">
+      <tr>
+        <th>RL Id</th>
+        <th>RL Type</th>
+        <th>Description</th>
+        <th>Creation Date</th>
+        <th>Department</th>
+        <th>Status</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:if="${#lists.isEmpty(statusReportListByDepartment)}">
+        <td colspan="6" class="text-center">No Regulations Found for this Department</td>
+      </tr>
+      <tr th:each="rl : ${statusReportListByDepartment}">
+        <td th:text="${rl[0].complianceId}"></td>
+        <td th:text="${rl[0].rlType}"></td>
+        <td th:text="${rl[0].details}"></td>
+        <td th:text="${rl[1] != null ? #temporals.format(rl[1].createDate, 'dd-MM-yyyy') : 'No Status Report'}"></td>
+<!--        <td th:text="${#temporals.format(rl[0].createDate, 'dd-MM-yyyy')}"></td>-->
+        <td th:text="${rl[0].department.departmentName}"></td>
+<!--        <td th:text="${rl[1].status}"></td>-->
+        <td th:text="${rl[1] != null ? rl[1].comments : 'Not Assigned to Anyone'}"></td>
+      </tr>
+      </tbody>
+    </table>
+    <a th:href="@{/admin/RegulationStatusByDept}" class="btn btn-secondary ms-2">RegulationStatus for Other Department</a>
+  </div>
+
+</div>
+
+</body>
+</html>

@@ -1,5 +1,8 @@
 package com.example.ems.Service;
 
+import com.example.ems.Model.Compliance;
+import com.example.ems.Model.Department;
+import com.example.ems.Model.Employee;
 import com.example.ems.Model.StatusReport;
 import com.example.ems.Repository.StatusReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,4 +77,69 @@ public class StatusReportService {
             throw new RuntimeException("Failed to delete status report.");
         }
     }
+    // Update Existing
+    public void updateStatusReport(StatusReport updatedReport, Long id) {
+        try {
+            StatusReport existingReport = statusReportRepository.findById(id)
+                    .orElseThrow(() -> new RuntimeException("Status Report not found with id: " + id));
+
+            validateAndAttachRelations(updatedReport);
+
+            existingReport.setCompliance(updatedReport.getCompliance());
+            existingReport.setEmployee(updatedReport.getEmployee());
+            existingReport.setDepartment(updatedReport.getDepartment());
+            existingReport.setComments(updatedReport.getComments());
+            existingReport.setCreateDate(updatedReport.getCreateDate());
+
+            statusReportRepository.save(existingReport);
+            logger.info("Status Report updated successfully with id: {}", id);
+
+        } catch (Exception ex) {
+            logger.error("Error updating Status Report: {}", ex.getMessage());
+            throw new RuntimeException("Failed to update Status Report");
+        }
+    }
+    @Autowired
+    EmployeesService employeesService;
+    @Autowired
+    DepartmentService departmentService;
+    @Autowired
+    ComplianceService complianceService;
+    // Validate and Attach Full Relations (Compliance, Employee, Department)
+    private void validateAndAttachRelations(StatusReport report) {
+
+        Compliance compliance = complianceService.getComplianceById(report.getCompliance().getComplianceId());
+        if (compliance == null) {
+            throw new RuntimeException("Compliance not found with id: " + report.getCompliance().getComplianceId());
+        }
+
+        Employee employee = employeesService.getEmployeeById(report.getEmployee().getEmpId());
+        if (employee == null) {
+            throw new RuntimeException("Employee not found with id: " + report.getEmployee().getEmpId());
+        }
+
+        Department department = departmentService.getDepartmentById(report.getDepartment().getDepartmentId());
+        if (department == null) {
+            throw new RuntimeException("Department not found with id: " + report.getDepartment().getDepartmentId());
+        }
+
+        report.setCompliance(compliance);
+        report.setEmployee(employee);
+        report.setDepartment(department);
+    }
+
+    public List<Compliance> getComplianceByEmployeeId(Long empId) {
+        return statusReportRepository.getComplianceByEmployeeId(empId);
+    }
+
+    public List<Object[]> latesStatusOfAllComplianceForDept(Long deptId) {
+        //  object[0] = compliance
+        //  object[1] = statusReport
+        return statusReportRepository.latesStatusOfAllComplianceForDept(deptId);
+    }
+
+    public StatusReport getStatusReportByComplianceAndEmployee(Long compId, Long empId) {
+        return statusReportRepository.findTopByCompliance_complianceIdAndEmployee_empIdOrderByCreateDateDesc(compId, empId);
+    }
+
 }

@@ -23,6 +23,9 @@ public class EmployeesService {
     private EmployeesRepository employeesRepository;
     @Autowired
     private DepartmentRepository departmentRepository;
+    @Autowired
+    StatusReportRepository statusReportRepository;
+
 
     // Save or Update Employee
     public Employee saveEmployee(Employee employee) {
@@ -100,8 +103,6 @@ public class EmployeesService {
 
         employeesRepository.save(existingEmployee);
     }
-    @Autowired
-    StatusReportRepository statusReportRepository;
 
 
     public Optional<Employee> getEmployeeByEmail(String email) {
@@ -113,6 +114,6 @@ public class EmployeesService {
     }
 
     public List<StatusReport> getStatusReportByComplianceAndEmployee(Long complianceId, Long empId) {
-        return statusReportRepository.findByCompliance_complianceIdAndEmployee_empIdOrderByCreateDateDescStatusRptIdDesc(complianceId,empId);
+        return statusReportRepository.findByCompliance_ComplianceIdAndEmployee_EmpIdOrderByCreateDateDescStatusRptIdDesc(complianceId,empId);
     }
 }

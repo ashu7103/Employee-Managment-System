@@ -12,7 +12,7 @@
     <form th:action="@{/user/statusreport/updateComment}" method="post">
 
         <!-- Hidden Field for StatusReport ID -->
-        <input type="hidden" name="statusRptId" th:value="${report.statusRptId}" />
+        <input type="hidden" name="statusRptId" th:value="${statusRptId}" />
 
         <div class="mb-3">
             <label for="comments" class="form-label">Your Comment:</label>

@@ -16,21 +16,18 @@ public class LoggingAspect {
     // Runs before every method inside com.example.ems.Service package
     @Before("execution(* com.example.ems.Service.*.*(..))")
     public void logMethodStart(JoinPoint joinPoint) {
-        System.out.println("➡️ [DEBUG] Entering Method: " + joinPoint.getSignature());
-        System.out.println("➡️ [DEBUG] Arguments: " + Arrays.toString(joinPoint.getArgs()));
+        System.out.println("[BEFORE] Entering Method: " + joinPoint.getSignature() + "  Arguments: " + Arrays.toString(joinPoint.getArgs()));
     }
 
     // Runs after method completes successfully
     @AfterReturning(pointcut = "execution(* com.example.ems.Service.*.*(..))", returning = "result")
     public void logMethodReturn(JoinPoint joinPoint, Object result) {
-        System.out.println("✅ [DEBUG] Method Completed: " + joinPoint.getSignature());
-        System.out.println("✅ [DEBUG] Returned: " + result);
+        System.out.println("[AFTER] Method Completed: " + joinPoint.getSignature()+ " - Returned: " + result);
     }
 
     // Runs if method throws exception
     @AfterThrowing(pointcut = "execution(* com.example.ems.Service.*.*(..))", throwing = "ex")
     public void logMethodException(JoinPoint joinPoint, Throwable ex) {
-        System.out.println("❌ [ERROR] Exception in Method: " + joinPoint.getSignature());
-        System.out.println("❌ [ERROR] Exception Message: " + ex.getMessage());
+        System.out.println("[ERROR] Exception in Method: " + joinPoint.getSignature() + " Exception Message: " + ex.getMessage());
     }
 }

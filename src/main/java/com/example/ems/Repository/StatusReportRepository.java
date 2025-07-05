@@ -37,7 +37,7 @@ public interface StatusReportRepository extends JpaRepository<StatusReport,Long>
     StatusReport findTopByCompliance_complianceIdAndEmployee_empIdOrderByCreateDateDesc(Long compId, Long empId);
 
     // 1. For User-specific Logs
-    List<StatusReport> findByCompliance_complianceIdAndEmployee_empIdOrderByCreateDateDescStatusRptIdDesc(Long complianceId, Long empId);
+    List<StatusReport> findByCompliance_ComplianceIdAndEmployee_EmpIdOrderByCreateDateDescStatusRptIdDesc(Long complianceId, Long empId);
 
     // 2. For All Logs of that Compliance
     List<StatusReport> findByCompliance_ComplianceIdOrderByCreateDateDescStatusRptIdDesc(Long complianceId);

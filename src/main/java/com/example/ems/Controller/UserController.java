@@ -76,11 +76,6 @@ public class UserController {
 
         StatusReport report = statusReportService.getStatusReportByComplianceAndEmployee(compId, selectedEmpId);
 
-//        if (report == null) {
-//            model.addAttribute("error", "No status report found for this regulation.");
-//            return "error";
-//        }
-
         // Check if logged-in user is same as the StatusReport's employee
         if (!report.getEmployee().getEmail().equals(email)) {
             model.addAttribute("WrongUser", "You are not authorized to modify this status.");
@@ -98,10 +93,10 @@ public class UserController {
         newReport.setComments(""); // or any default
         newReport.setCreateDate(LocalDate.now()); // or LocalDateTime.now()
 
-        statusReportService.saveStatusReport(newReport);
+//        statusReportService.saveStatusReport(newReport);
 
         model.addAttribute("report", newReport);
-//        model.addAttribute("report", report);
+        model.addAttribute("statusRptId", report.getStatusRptId());
         return "updateComment";
     }
     @PostMapping("/statusreport/updateComment")
